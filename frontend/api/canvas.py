@@ -1,5 +1,6 @@
 import requests
 import json
+import re
 from api.tokens import API_URL, TOKEN
 
 headers = {
@@ -17,11 +18,18 @@ def get_assignments(course_id):
 
         for assignment in assignments:
             completed = assignment['has_submitted_submissions']
+
             if not completed:
+                cleaned_desc = re.sub(r'<script.*?>.*?</script>', '', assignment['description'], flags=re.DOTALL)
+                cleaned_desc = re.sub(r'<link.*?>', '', cleaned_desc)
+                cleaned_desc = re.sub(r'<[^>]+>', '', cleaned_desc)
+                cleaned_desc = re.sub(r'&nbsp;', ' ', cleaned_desc)
+                cleaned_desc = re.sub(r'\s+', ' ', cleaned_desc).strip()
+
                 filt_assign = {
                     'source': 'Canvas',
                     'name': assignment['name'],
-                    'description': assignment['description'],
+                    'description': cleaned_desc,
                     'due_at': assignment['due_at'],
                     'course_id': assignment['course_id'],
                     'html_url': assignment['html_url']
@@ -42,9 +50,7 @@ def get_all_assignments():
          assign_json = get_assignments(c)
          course_assignments.append(assign_json)
 
-    return course_assignments[0]
-    # with open('assignments.json', 'w') as f:
-    #     json.dump(course_assignments, f)
+    return course_assignments
 
 if __name__ == "__main__":
     get_all_assignments()
