@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.slack import Slack
 from api.gmail import get_all_messages
 from api.canvas import get_all_assignments
+from api.aixplainintegration import get_agent1_response
 
 app = FastAPI()
 
@@ -27,8 +28,12 @@ async def chat(message: Message):
     gmail_messages = get_all_messages()
     assigments = get_all_assignments()
 
+    combined_messages = slack_messages + gmail_messages + assigments
 
-    return {"response": f'{assigments}'}
+    agent1_response = get_agent1_response(slack_messages)
+
+
+    return {"response": f'{agent1_response}'}
     # return {"response": f"Bot response to: {user_message}"}
 
 
