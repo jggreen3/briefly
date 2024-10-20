@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,3 +20,4 @@ class Message(BaseModel):
 async def chat(message: Message):
     user_message = message.message
     return {"response": f"Bot response to: {user_message}"}
+
