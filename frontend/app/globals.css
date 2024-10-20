@@ -25,3 +25,42 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+
+/* Flashing dots animation */
+.dot-flashing {
+  position: relative;
+  width: 40px;
+  height: 8px;
+}
+
+.dot-flashing::before, .dot-flashing::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0070f3;
+  animation: dot-flashing 1s infinite alternate;
+}
+
+.dot-flashing::before {
+  left: 0;
+  animation-delay: 0.2s;
+}
+
+.dot-flashing::after {
+  left: 16px;
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-flashing {
+  0% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.3;
+  }
+}

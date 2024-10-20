@@ -5,13 +5,16 @@ import React, { useState } from 'react';
 const Chat = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false); // New loading state
 
   // Function to send a message
   const handleSend = async () => {
-    // Prevent sending empty messages or messages with only spaces
     if (!input.trim()) return;
 
     setMessages([...messages, `User: ${input}`]);
+
+    setInput('');  // Clear input immediately
+    setLoading(true);  // Set loading to true while waiting for bot response
 
     try {
       // Call the FastAPI backend to get the bot's response
@@ -27,17 +30,16 @@ const Chat = () => {
       setMessages((prevMessages) => [...prevMessages, `Briefly: ${data.response}`]);
     } catch (error) {
       console.error('Error sending message:', error);
+    } finally {
+      setLoading(false);  // Set loading to false once the response is received
     }
-
-    // Clear the input field after sending the message
-    setInput('');
   };
 
   // Handle the Enter key press
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent the default behavior (form submission)
-      handleSend();       // Call handleSend to send the message
+      e.preventDefault();  // Prevent the default behavior (form submission)
+      handleSend();        // Call handleSend to send the message
     }
   };
 
@@ -53,6 +55,13 @@ const Chat = () => {
             {message}
           </div>
         ))}
+        {/* Loading dots displayed when the bot is generating a response */}
+        {loading && (
+          <div className="flex items-center space-x-2 mt-2">
+            <span>Briefly is typing</span>
+            <div className="dot-flashing"></div>
+          </div>
+        )}
       </div>
 
       {/* Input box */}
