@@ -24,7 +24,7 @@ const Chat = () => {
       });
 
       const data = await res.json();
-      setMessages((prevMessages) => [...prevMessages, `Bot: ${data.response}`]);
+      setMessages((prevMessages) => [...prevMessages, `Briefly: ${data.response}`]);
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -44,7 +44,7 @@ const Chat = () => {
   return (
     <div className="w-full max-w-4xl mx-auto p-4 h-screen flex flex-col">
       {/* Title */}
-      <h1 className="text-2xl font-bold text-center mb-4">Chat Interface</h1>
+      <h1 className="text-2xl font-bold text-center mb-4">Briefly</h1>
 
       {/* Chat window */}
       <div className="flex-grow border border-gray-300 rounded-lg p-4 overflow-y-auto bg-white h-[calc(100vh-150px)]">
