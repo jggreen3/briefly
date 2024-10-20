@@ -1,6 +1,6 @@
 import requests
 import json
-from tokens import API_URL, TOKEN
+from api.tokens import API_URL, TOKEN
 
 headers = {
     'Authorization': f'Bearer {TOKEN}'
@@ -33,7 +33,7 @@ def get_assignments(course_id):
 
     return filtered
 
-def main():
+def get_all_assignments():
 
     courses = [1621853]
 
@@ -42,8 +42,9 @@ def main():
          assign_json = get_assignments(c)
          course_assignments.append(assign_json)
 
-    with open('assignments.json', 'w') as f:
-        json.dump(course_assignments, f)
+    return course_assignments[0]
+    # with open('assignments.json', 'w') as f:
+    #     json.dump(course_assignments, f)
 
 if __name__ == "__main__":
-    main()
+    get_all_assignments()
