@@ -28,12 +28,11 @@ async def chat(message: Message):
     gmail_messages = get_all_messages()
     assigments = get_all_assignments()
 
-    combined_messages = slack_messages + gmail_messages + assigments
+    combined_messages = [slack_messages, gmail_messages, assigments]
 
-    agent1_response = get_agent1_response(slack_messages)
+
+    agent1_response = get_agent1_response(combined_messages)
 
 
     return {"response": f'{agent1_response}'}
     # return {"response": f"Bot response to: {user_message}"}
-
-
