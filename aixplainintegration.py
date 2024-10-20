@@ -1,5 +1,4 @@
 import os
-os.environ["TEAM_API_KEY"] = "ad4a8c09d88b13b5c44086e1afe31fc8f29e6757fac5143533bbc2ed7c5ccc2a"
 
 from aixplain.factories import AgentFactory
 from aixplain.modules.agent import ModelTool
