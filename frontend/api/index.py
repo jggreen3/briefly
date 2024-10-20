@@ -31,3 +31,4 @@ async def chat(message: Message):
     return {"response": f'{assigments}'}
     # return {"response": f"Bot response to: {user_message}"}
 
+
