@@ -1,14 +1,13 @@
 import requests
 import json
 import re
-from api.tokens import API_URL, TOKEN
 
 headers = {
-    'Authorization': f'Bearer {TOKEN}'
+    'Authorization': f'Bearer {}'
 }
 
 def get_assignments(course_id):
-    url = f'{API_URL}{course_id}/assignments'
+    url = f'https://usfca.instructure.com/api/v1/courses/{course_id}/assignments'
     response = requests.get(url, headers=headers)
     
     if response.status_code == 200:

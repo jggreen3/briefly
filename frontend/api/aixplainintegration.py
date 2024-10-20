@@ -57,6 +57,8 @@ agent = AgentFactory.get("67156bd357c705a318033bbd")
 
 
 def get_agent1_response(messages_and_assignments:str):
+    slack_messages = messages_and_assignments[0]
     input_query = f"Given the following data, summarize them into a numbered list of tasks to complete that are brief and concise but still capture all of the original context, only create tasks if there is an actionable item, also state which source and sender it comes from: {messages_and_assignments}"
     agent_response = agent.run(query=input_query)
+
     return agent_response['data']['output']
