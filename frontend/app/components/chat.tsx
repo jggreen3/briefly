@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 const Chat = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Array<{ user: string; bot?: string }>>([]);
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false); // New loading state
 
@@ -11,8 +11,7 @@ const Chat = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    setMessages([...messages, `User: ${input}`]);
-
+    setMessages([...messages, { user: input }]);
     setInput('');  // Clear input immediately
     setLoading(true);  // Set loading to true while waiting for bot response
 
@@ -27,7 +26,8 @@ const Chat = () => {
       });
 
       const data = await res.json();
-      setMessages((prevMessages) => [...prevMessages, `Briefly: ${data.response}`]);
+      // Save both the user's message and bot's HTML response
+      setMessages((prevMessages) => [...prevMessages, { user: input, bot: data.response }]);
     } catch (error) {
       console.error('Error sending message:', error);
     } finally {
@@ -38,8 +38,8 @@ const Chat = () => {
   // Handle the Enter key press
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      e.preventDefault();  // Prevent the default behavior (form submission)
-      handleSend();        // Call handleSend to send the message
+      e.preventDefault(); // Prevent the default behavior (form submission)
+      handleSend();       // Call handleSend to send the message
     }
   };
 
@@ -51,14 +51,21 @@ const Chat = () => {
       {/* Chat window */}
       <div className="flex-grow border border-gray-300 rounded-lg p-4 overflow-y-auto bg-white h-[calc(100vh-150px)]">
         {messages.map((message, index) => (
-          <div key={index} className="mb-2">
-            {message}
+          <div key={index} className="mb-4">
+            <div><strong>User:</strong> {message.user}</div>
+            {/* Render bot's HTML safely */}
+            {message.bot && (
+              <div
+                className="mt-2"
+                dangerouslySetInnerHTML={{ __html: message.bot }}  // Render HTML content
+              />
+            )}
           </div>
         ))}
         {/* Loading dots displayed when the bot is generating a response */}
         {loading && (
           <div className="flex items-center space-x-2 mt-2">
-            <span>Briefly is typing</span>
+            <span>Briefly is typing:</span>
             <div className="dot-flashing"></div>
           </div>
         )}

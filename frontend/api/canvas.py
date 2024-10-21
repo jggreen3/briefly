@@ -1,9 +1,10 @@
 import requests
 import json
 import re
+from api.tokens import API_URL, TOKEN
 
 headers = {
-    'Authorization': f'Bearer {}'
+    'Authorization': f'Bearer {TOKEN}'
 }
 
 def get_assignments(course_id):
@@ -35,10 +36,11 @@ def get_assignments(course_id):
                 }
                 
                 filtered.append(filt_assign)
+        return filtered
     else:
         print(f"Failure :c status is {response.status_code}, message {response.text}")
 
-    return filtered
+    
 
 def get_all_assignments():
 

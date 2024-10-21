@@ -64,3 +64,8 @@ body {
     opacity: 0.3;
   }
 }
+
+ul {
+  list-style-type: decimal;  /* Use numbers for list items instead of bullets */
+  padding-left: 1.5rem;      /* Add padding to align numbers with the text */
+}
